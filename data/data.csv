@@ -1,4 +1,4 @@
-Year,Quarter,MAPC,Weight (Revenue),,,,Total Revenue,Externalities,Aug'19 crash,Feb'20 crash,Nov'20 boom,Gross Bookings ,,,,Market share (percentage),Stock price
+Year,Quarter,MAPC,Revenue,Ride ,Delivery,Freight,,Externalities,Aug'19 crash,Feb'20 crash,Nov'20 boom,Gross Bookings ,Ride ,Delivery,Freight,Market share (percentage),Stock price
 2018,Q1,70,,,,,,,IPO Irregularities,COVID,California Reg,,,,,,
 2018,Q2,76,,,,,,,,,,,,,,,
 2018,Q3,82,,,,,,,,,,,,,,,
