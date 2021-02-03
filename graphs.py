@@ -66,5 +66,5 @@ fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Bookings(Ride)', 'Booki
 savefig(fig, 'consolidated/' + title)
 
 title = 'Stock and Explanatory variables'
-fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Total revenue', 'MAPC', 'Total bookings',], title=title)
+fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Externalities', 'Total revenue', 'MAPC', 'Total bookings',], title=title)
 savefig(fig, 'consolidated/' + title)
