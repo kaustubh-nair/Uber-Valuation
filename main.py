@@ -1,6 +1,6 @@
 import pandas
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge, LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import MinMaxScaler
 import plotly.express as px
@@ -79,28 +79,30 @@ def drawgraphs():
     savefig(fig, 'consolidated/' + title)
 
 
+def model():
+    polynomial_features= PolynomialFeatures(degree=2)
+    #x_poly = polynomial_features.fit_transform(df[['Externalities', 'MAPC', 'Total revenue', 'Total bookings']])
+    x_poly = polynomial_features.fit_transform(df[[x for x in columns if x != 'Stock price']])
+    print(x_poly)
+
+    y = df['Stock price']
+    model = LinearRegression()
+    model.fit(x_poly, y)
+    y_poly_pred = model.predict(x_poly)
+
+    df['Fitted value'] = y_poly_pred
+    print(df)
+    print(df['Fitted value'])
+
+    title = 'Quadratic Regression all features'
+    fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Fitted value'], title=title)
+    savefig(fig, 'model/' + title)
+
+    rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
+    print(rmse)
+
 string_columns = ['Year', 'Quarter']
 columns = ['Stock price','Externalities', 'MAPC', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings']
 df = read()
 
-polynomial_features= PolynomialFeatures(degree=2)
-x_poly = polynomial_features.fit_transform(df[[x for x in columns if x != 'Stock price']])
-
-y = df['Stock price']
-model = LinearRegression()
-model.fit(x_poly, y)
-y_poly_pred = model.predict(x_poly)
-
-df['Fitted value'] = y_poly_pred
-print(df)
-print(df['Fitted value'])
-
-title = 'Fitted vs Original Stock value'
-fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Fitted value'], title=title)
-savefig(fig, 'consolidated/' + title)
-
-
-rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
-r2 = r2_score(y,y_poly_pred)
-print(rmse)
-print(r2)
+model()
