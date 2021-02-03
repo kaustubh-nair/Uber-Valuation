@@ -18,9 +18,31 @@ title = 'Stock price'
 fig = px.line(df, x="Yearly Quarter", y="Stock price", title=title)
 savefig(fig, title)
 
-title = 'Monthly Active Platform consumers'
+title = 'Monthly Active Platform consumers (millions)'
 fig = px.line(df, x="Yearly Quarter", y="MAPC", title=title)
 savefig(fig, title)
-title = 'Monthly Active Platform consumers'
-fig = px.line(df, x="Yearly Quarter", y="MAPC", title=title)
+
+title = 'Gross bookings'
+fig = px.line(df, x="Yearly Quarter", y="Total bookings", title=title)
+savefig(fig, title)
+
+title = 'Total revenue'
+fig = px.line(df, x="Yearly Quarter", y="Total revenue", title=title)
+savefig(fig, title)
+
+title = 'Externalities'
+fig = px.line(df, x="Yearly Quarter", y="Externalities", title=title)
+savefig(fig, title)
+
+fig = px.scatter_matrix(df, dimensions=['Stock price', 'MAPC', 'Total bookings', 'Total revenue',], color="Yearly Quarter", color_discrete_sequence=px.colors.sequential.Burg, title='Scatter matrix')
+savefig(fig, 'Scatter matrix')
+
+corr = df[['Stock price', 'MAPC', 'Total revenue', 'Externalities', 'Total bookings',]].corr()
+title = 'Correlation matrix'
+fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, title=title)
+savefig(fig, title)
+
+corr = df[['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)','Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', ]].corr()
+title = 'Correlation matrix'
+fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, title=title)
 savefig(fig, title)
