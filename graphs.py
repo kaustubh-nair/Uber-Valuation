@@ -21,3 +21,6 @@ savefig(fig, title)
 title = 'Monthly Active Platform consumers'
 fig = px.line(df, x="Yearly Quarter", y="MAPC", title=title)
 savefig(fig, title)
+title = 'Monthly Active Platform consumers'
+fig = px.line(df, x="Yearly Quarter", y="MAPC", title=title)
+savefig(fig, title)
