@@ -46,3 +46,25 @@ corr = df[['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight
 title = 'Correlation matrix with streams'
 fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, title=title)
 savefig(fig, title)
+
+data = df
+data['Revenue(Ride)'] = data['Revenue(Ride)']/100
+data['Revenue(Delivery)'] = data['Revenue(Delivery)']/100
+data['Revenue(Freight)'] = data['Revenue(Freight)']/100
+data['Total revenue'] = data['Total revenue']/100
+data['Bookings(Ride)'] = data['Bookings(Ride)']/100
+data['Bookings(Delivery)'] = data['Bookings(Delivery)']/100
+data['Bookings(Freight)'] = data['Bookings(Freight)']/100
+data['Total bookings'] = data['Total bookings']/100
+
+title = 'Stock and Revenue'
+fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue',], title=title)
+savefig(fig, 'consolidated/' + title)
+
+title = 'Stock and Bookings'
+fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings',], title=title)
+savefig(fig, 'consolidated/' + title)
+
+title = 'Stock and Explanatory variables'
+fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Total revenue', 'MAPC', 'Total bookings',], title=title)
+savefig(fig, 'consolidated/' + title)
