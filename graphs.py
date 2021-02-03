@@ -56,6 +56,7 @@ data['Bookings(Ride)'] = data['Bookings(Ride)']/100
 data['Bookings(Delivery)'] = data['Bookings(Delivery)']/100
 data['Bookings(Freight)'] = data['Bookings(Freight)']/100
 data['Total bookings'] = data['Total bookings']/100
+data['Externalities'] = data['Externalities']*25
 
 title = 'Stock and Revenue'
 fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue',], title=title)
