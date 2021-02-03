@@ -43,6 +43,6 @@ fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, tit
 savefig(fig, title)
 
 corr = df[['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)','Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', ]].corr()
-title = 'Correlation matrix'
+title = 'Correlation matrix with streams'
 fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, title=title)
 savefig(fig, title)
