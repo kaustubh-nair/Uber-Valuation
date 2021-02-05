@@ -66,15 +66,15 @@ def drawgraphs():
     savefig(fig, title)
 
 
-    title = 'Stock and Revenue'
+    title = 'Valuation and Revenue'
     fig = px.line(df, x='Yearly Quarter', y=['Valuation', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue',], title=title)
     savefig(fig, 'consolidated/' + title)
 
-    title = 'Stock and Bookings'
+    title = 'Valuation and Bookings'
     fig = px.line(df, x='Yearly Quarter', y=['Valuation', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings',], title=title)
     savefig(fig, 'consolidated/' + title)
 
-    title = 'Stock and Explanatory variables'
+    title = 'Valuation and Explanatory variables'
     fig = px.line(df, x='Yearly Quarter', y=['Valuation', 'Externalities', 'Total revenue', 'MAPC', 'Total bookings',], title=title)
     savefig(fig, 'consolidated/' + title)
 
