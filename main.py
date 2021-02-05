@@ -32,8 +32,8 @@ def savefig(fig, title):
 
 def drawgraphs():
 
-    title = 'Stock price'
-    fig = px.line(df, x="Yearly Quarter", y="Stock price", title=title)
+    title = 'Valuation'
+    fig = px.line(df, x="Yearly Quarter", y="Valuation", title=title)
     savefig(fig, title)
 
     title = 'Monthly Active Platform consumers (millions)'
@@ -52,57 +52,70 @@ def drawgraphs():
     fig = px.line(df, x="Yearly Quarter", y="Externalities", title=title)
     savefig(fig, title)
 
-    fig = px.scatter_matrix(df, dimensions=['Stock price', 'MAPC', 'Total bookings', 'Total revenue',], color="Yearly Quarter", color_discrete_sequence=px.colors.sequential.Burg, title='Scatter matrix')
+    fig = px.scatter_matrix(df, dimensions=['Valuation', 'MAPC', 'Total bookings', 'Total revenue',], color="Yearly Quarter", color_discrete_sequence=px.colors.sequential.Burg, title='Scatter matrix')
     savefig(fig, 'Scatter matrix')
 
-    corr = df[['Stock price', 'MAPC', 'Total revenue', 'Externalities', 'Total bookings',]].corr()
+    corr = df[['Valuation', 'MAPC', 'Total revenue', 'Externalities', 'Total bookings',]].corr()
     title = 'Correlation matrix'
     fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, title=title)
     savefig(fig, title)
 
-    corr = df[['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)','Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', ]].corr()
+    corr = df[['Valuation', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)','Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', ]].corr()
     title = 'Correlation matrix with streams'
     fig = px.imshow(corr, color_continuous_scale=px.colors.sequential.Cividis_r, title=title)
     savefig(fig, title)
 
 
     title = 'Stock and Revenue'
-    fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue',], title=title)
+    fig = px.line(df, x='Yearly Quarter', y=['Valuation', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue',], title=title)
     savefig(fig, 'consolidated/' + title)
 
     title = 'Stock and Bookings'
-    fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings',], title=title)
+    fig = px.line(df, x='Yearly Quarter', y=['Valuation', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings',], title=title)
     savefig(fig, 'consolidated/' + title)
 
     title = 'Stock and Explanatory variables'
-    fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Externalities', 'Total revenue', 'MAPC', 'Total bookings',], title=title)
+    fig = px.line(df, x='Yearly Quarter', y=['Valuation', 'Externalities', 'Total revenue', 'MAPC', 'Total bookings',], title=title)
     savefig(fig, 'consolidated/' + title)
 
 
-def model():
-    polynomial_features= PolynomialFeatures(degree=2)
-    #x_poly = polynomial_features.fit_transform(df[['Externalities', 'MAPC', 'Total revenue', 'Total bookings']])
-    x_poly = polynomial_features.fit_transform(df[[x for x in columns if x != 'Stock price']])
+def model(x_poly, title):
     print(x_poly)
 
-    y = df['Stock price']
+    y = df['Valuation']
     model = LinearRegression()
     model.fit(x_poly, y)
     y_poly_pred = model.predict(x_poly)
 
-    df['Fitted value'] = y_poly_pred
+    df['Fitted valuation'] = y_poly_pred
     print(df)
-    print(df['Fitted value'])
+    print(df['Fitted valuation'])
+    df['Actual valuation'] = df['Valuation']
 
-    title = 'Quadratic Regression all features'
-    fig = px.line(df, x='Yearly Quarter', y=['Stock price', 'Fitted value'], title=title)
+    fig = px.line(df, x='Yearly Quarter', y=['Actual valuation', 'Fitted valuation'], title=title)
     savefig(fig, 'model/' + title)
 
     rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
     print(rmse)
 
 string_columns = ['Year', 'Quarter']
-columns = ['Stock price','Externalities', 'MAPC', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings']
+columns = ['Valuation','Externalities', 'MAPC', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings']
 df = read()
 
-model()
+polynomial_features= PolynomialFeatures(degree=2)
+x_poly = polynomial_features.fit_transform(df[[x for x in columns if x != 'Valuation']])
+title = 'Quadratic Regression all features'
+model(x_poly, title)
+
+x_poly = polynomial_features.fit_transform(df[['Externalities', 'MAPC', 'Total revenue', 'Total bookings']])
+title = 'Quadratic Regression aggregated features'
+model(x_poly, title)
+
+polynomial_features= PolynomialFeatures(degree=1)
+x_poly = polynomial_features.fit_transform(df[[x for x in columns if x != 'Valuation']])
+title = 'Linear Regression all features'
+model(x_poly, title)
+
+x_poly = polynomial_features.fit_transform(df[['Externalities', 'MAPC', 'Total revenue', 'Total bookings']])
+title = 'Linear Regression aggregated features'
+model(x_poly, title)
