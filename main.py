@@ -101,6 +101,7 @@ def model(x_poly, title):
 string_columns = ['Year', 'Quarter']
 columns = ['Valuation','Externalities', 'MAPC', 'Revenue(Ride)', 'Revenue(Delivery)', 'Revenue(Freight)', 'Total revenue', 'Bookings(Ride)', 'Bookings(Delivery)', 'Bookings(Freight)', 'Total bookings']
 df = read()
+drawgraphs()
 
 polynomial_features= PolynomialFeatures(degree=2)
 x_poly = polynomial_features.fit_transform(df[[x for x in columns if x != 'Valuation']])
